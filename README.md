@@ -8,3 +8,5 @@ Move in progress from sourceforge.
 http://smsj.sourceforge.net/
 
 The first smsj checkin was done at Mar 15, 2002
+
+View Changelog.txt to release notes

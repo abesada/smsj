@@ -43,86 +43,91 @@ import org.marre.util.StringUtil;
  */
 public class UcpSeries50 extends UcpMsg
 {
-    public static final byte OP_SUBMIT_SHORT_MESSAGE = 51;
-    public static final byte OP_DELIVER_SHORT_MESSAGE = 52;
-    public static final byte OP_DELIVER_NOTIFICATION = 53;
-    public static final byte OP_MODIFY_MESSAGE = 54;
-    public static final byte OP_INQUIRY_MESSAGE = 55;
-    public static final byte OP_DELETE_MESSAGE = 56;
-    public static final byte OP_RESPONSE_INQUIRY_MESSAGE = 57;
-    public static final byte OP_RESPONSE_DELETE_MESSAGE = 58;
+	public static final byte OP_SUBMIT_SHORT_MESSAGE = 51;
+	public static final byte OP_DELIVER_SHORT_MESSAGE = 52;
+	public static final byte OP_DELIVER_NOTIFICATION = 53;
+	public static final byte OP_MODIFY_MESSAGE = 54;
+	public static final byte OP_INQUIRY_MESSAGE = 55;
+	public static final byte OP_DELETE_MESSAGE = 56;
+	public static final byte OP_RESPONSE_INQUIRY_MESSAGE = 57;
+	public static final byte OP_RESPONSE_DELETE_MESSAGE = 58;
+	public static final byte XSER_TYPE_UDH = 1;
+	public static final byte XSER_TYPE_DCS = 2;
+	protected static final int FIELD_ADC = 0;
+	protected static final int FIELD_OADC = 1;
+	protected static final int FIELD_AC = 2;
+	protected static final int FIELD_NRQ = 3;
+	protected static final int FIELD_NADC = 4;
+	protected static final int FIELD_NT = 5;
+	protected static final int FIELD_NPID = 6;
+	protected static final int FIELD_LRQ = 7;
+	protected static final int FIELD_LRAD = 8;
+	protected static final int FIELD_LPID = 9;
+	protected static final int FIELD_DD = 10;
+	protected static final int FIELD_DDT = 11;
+	protected static final int FIELD_VP = 12;
+	protected static final int FIELD_RPID = 13;
+	protected static final int FIELD_SCTS = 14;
+	protected static final int FIELD_DST = 15;
+	protected static final int FIELD_RSN = 16;
+	protected static final int FIELD_DSCTS = 17;
+	protected static final int FIELD_MT = 18;
+	protected static final int FIELD_NB = 19;
+	protected static final int FIELD_MSG = 20; // NMsg, AMsg or TMsg (MT)
+	protected static final int FIELD_MMS = 21;
+	protected static final int FIELD_PR = 22;
+	protected static final int FIELD_DCS = 23;
+	protected static final int FIELD_MCLS = 24;
+	protected static final int FIELD_RPI = 25;
+	protected static final int FIELD_CPG = 26;
+	protected static final int FIELD_RPLY = 27;
+	protected static final int FIELD_OTOA = 28;
+	protected static final int FIELD_HPLMN = 29;
+	protected static final int FIELD_XSER = 30;
+	protected static final int FIELD_RES4 = 31;
+	protected static final int FIELD_RES5 = 32;
 
-    public static final byte XSER_TYPE_UDH = 1;
-    public static final byte XSER_TYPE_DCS = 2;
+	public UcpSeries50(byte operation)
+	{
+		super(33);
+		setOR('O');
+		setOT(operation);
+	}
 
-    protected static final int FIELD_ADC = 0;
-    protected static final int FIELD_OADC = 1;
-    protected static final int FIELD_AC = 2;
-    protected static final int FIELD_NRQ = 3;
-    protected static final int FIELD_NADC = 4;
-    protected static final int FIELD_NT = 5;
-    protected static final int FIELD_NPID = 6;
-    protected static final int FIELD_LRQ = 7;
-    protected static final int FIELD_LRAD = 8;
-    protected static final int FIELD_LPID = 9;
-    protected static final int FIELD_DD = 10;
-    protected static final int FIELD_DDT = 11;
-    protected static final int FIELD_VP = 12;
-    protected static final int FIELD_RPID = 13;
-    protected static final int FIELD_SCTS = 14;
-    protected static final int FIELD_DST = 15;
-    protected static final int FIELD_RSN = 16;
-    protected static final int FIELD_DSCTS = 17;
-    protected static final int FIELD_MT = 18;
-    protected static final int FIELD_NB = 19;
-    protected static final int FIELD_MSG = 20; // NMsg, AMsg or TMsg (MT)
-    protected static final int FIELD_MMS = 21;
-    protected static final int FIELD_PR = 22;
-    protected static final int FIELD_DCS = 23;
-    protected static final int FIELD_MCLS = 24;
-    protected static final int FIELD_RPI = 25;
-    protected static final int FIELD_CPG = 26;
-    protected static final int FIELD_RPLY = 27;
-    protected static final int FIELD_OTOA = 28;
-    protected static final int FIELD_HPLMN = 29;
-    protected static final int FIELD_XSER = 30;
-    protected static final int FIELD_RES4 = 31;
-    protected static final int FIELD_RES5 = 32;
+	public void clearXSer()
+	{
+		ucpFields_[FIELD_XSER] = null;
+	}
 
-    public UcpSeries50(byte operation)
-    {
-        super(33);
-        setOR('O');
-        setOT(operation);
-    }
+	public void addXSer(byte type, byte data)
+	{
+		StringBuffer xSerBuff = new StringBuffer();
+		xSerBuff.append(StringUtil.byteToHexString(type));
+		xSerBuff.append("01");
+		xSerBuff.append(StringUtil.byteToHexString(data));
+		ucpFields_[FIELD_XSER] = (ucpFields_[FIELD_XSER] == null) ? (xSerBuff.toString()) : (ucpFields_[FIELD_XSER] + xSerBuff.toString());
+	}
 
-    public void clearXSer()
-    {
-        ucpFields_[FIELD_XSER] = null;
-    }
+	public void addXSer(byte type, byte[] data)
+	{
+		StringBuffer xSerBuff = new StringBuffer();
+		xSerBuff.append(StringUtil.byteToHexString(type));
+		xSerBuff.append(StringUtil.byteToHexString((byte) (data.length & 0xff)));
+		xSerBuff.append(StringUtil.bytesToHexString(data));
+		ucpFields_[FIELD_XSER] = (ucpFields_[FIELD_XSER] == null) ? (xSerBuff.toString()) : (ucpFields_[FIELD_XSER] + xSerBuff.toString());
+	}
 
-    public void addXSer(byte type, byte data)
-    {
-        StringBuffer xSerBuff = new StringBuffer();
-
-        xSerBuff.append(StringUtil.byteToHexString(type));
-        xSerBuff.append("01");
-        xSerBuff.append(StringUtil.byteToHexString(data));
-
-        ucpFields_[FIELD_XSER] = (ucpFields_[FIELD_XSER] == null) ? (xSerBuff.toString())
-                : (ucpFields_[FIELD_XSER] + xSerBuff.toString());
-    }
-
-    public void addXSer(byte type, byte[] data)
-    {
-        StringBuffer xSerBuff = new StringBuffer();
-
-        xSerBuff.append(StringUtil.byteToHexString(type));
-        xSerBuff.append(StringUtil.byteToHexString((byte) (data.length + 1 & 0xff)));
-        xSerBuff.append(StringUtil.byteToHexString((byte) (data.length & 0xff)));
-        xSerBuff.append(StringUtil.bytesToHexString(data));
-
-        ucpFields_[FIELD_XSER] = (ucpFields_[FIELD_XSER] == null) ? (xSerBuff.toString())
-                : (ucpFields_[FIELD_XSER] + xSerBuff.toString());
-    }
+	public boolean parseResult(String smscresponse)
+	{
+		boolean result = false;
+		String[] resp = smscresponse.split("/");
+		if (resp != null && resp.length > 0)
+		{
+			if (resp[4].equalsIgnoreCase("A"))
+			{ // A = ACK, N = NACK
+				result = true;
+			}
+		}
+		return result;
+	}
 }

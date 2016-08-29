@@ -1,12 +1,14 @@
 Version 0.1.1
-	UcpTransport:
-		- Field OTOA fixed
-		- Latin1 without UDH accepted
-		- Send method return the last result (improve)
 	SmsTextMessage:
 		- Autodetect encoding and alphabet
 		- Latin1 coding fixed
 		- GSM message normalized
 		- Long message type accepted (to send message with 160 characters or more)
+
 	UcpSeries50:
 		- UDH fixed (allow multi-part messages)
+
+	UcpTransport:
+		- Field OTOA fixed
+		- Latin1 without UDH accepted
+		- Send method return the last result (improve)
