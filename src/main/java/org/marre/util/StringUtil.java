@@ -182,7 +182,7 @@ public final class StringUtil
 	 */
 	public static String detectEncodingType(String text)
 	{
-		String chars[] = { "€", "á", "é", "í", "ó", "ú", "ü", "ñ", "Á", "É", "Í", "Ó", "Ú", "Ü", "Ñ" };
+		String chars[] = { "€", "á", "é", "í", "ó", "ú", "ü", "ñ", "Á", "É", "Í", "Ó", "Ú", "Ü", "Ñ", "[" };
 		String codings[] = { "Windows-1252", "ISO-8859-15", "UTF-8" };
 		for (int i = 0; i < chars.length; i++)
 		{

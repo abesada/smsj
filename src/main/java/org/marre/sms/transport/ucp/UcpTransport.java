@@ -67,6 +67,7 @@ public class UcpTransport implements SmsTransport
 	private Socket ucpSocket_;
 	private DataOutputStream ucpOs_;
 	private DataInputStream ucpIs_;
+	private int timeout = 10000;
 
 	public UcpTransport()
 	{
@@ -110,6 +111,7 @@ public class UcpTransport implements SmsTransport
 	{
 		// Connect to the UCP server
 		ucpSocket_ = new Socket(ucpServerName_, ucpServerPort_);
+		ucpSocket_.setSoTimeout(timeout);
 		ucpOs_ = new DataOutputStream(ucpSocket_.getOutputStream());
 		ucpIs_ = new DataInputStream(ucpSocket_.getInputStream());
 		// Logging into the Remote Host via UCP 60;
@@ -118,7 +120,7 @@ public class UcpTransport implements SmsTransport
 		{
 			byte[] loginCmd = buildLogin(ucp60Uid_, ucp60Pwd_);
 			String response = sendUcp(loginCmd);
-			System.err.println("SMSC response: " + response);
+			System.out.println("SMSC response: " + response);
 		}
 	}
 
@@ -136,7 +138,7 @@ public class UcpTransport implements SmsTransport
 			boolean moreToSend = (i < (msgPdu.length - 1));
 			byte[] submitCmd = buildSubmit(msgPdu[i], moreToSend, destination, sender);
 			response = sendUcp(submitCmd);
-			System.err.println("SMSC response: " + response);
+			System.out.println("SMSC response: " + response);
 		}
 		return response;
 	}

@@ -1,3 +1,9 @@
+Version 0.1.2
+	UcpTransport:
+		- Añadido TCP timeout
+	SmsOtaMessage
+		- Soporte a mensajes OTA
+		
 Version 0.1.1
 	SmsTextMessage:
 		- Autodetect encoding and alphabet

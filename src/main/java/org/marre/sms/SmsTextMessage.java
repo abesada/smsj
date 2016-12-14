@@ -49,8 +49,8 @@ import org.marre.util.StringUtil;
  */
 public class SmsTextMessage extends SmsConcatMessage
 {
-	private String text_;
-	private SmsDcs dcs_;
+	protected String text_;
+	protected SmsDcs dcs_;
 
 	/**
 	 * Creates an SmsTextMessage with the given dcs.
@@ -106,7 +106,8 @@ public class SmsTextMessage extends SmsConcatMessage
 	{
 		SmsAlphabet smsAlphabet = SmsAlphabet.GSM;
 		String encoding = StringUtil.detectEncodingType(msg);
-		System.err.println("Encoding detected: " + encoding);
+		SmsMsgClass messageClass = SmsMsgClass.CLASS_UNKNOWN;
+		System.out.println("Encoding detected: " + encoding);
 		if (!encoding.equals("US-ASCII"))
 		{
 			try
@@ -118,7 +119,7 @@ public class SmsTextMessage extends SmsConcatMessage
 			{
 			}
 		}
-		this.setText(msg, SmsDcs.getGeneralDataCodingDcs(smsAlphabet, SmsMsgClass.CLASS_UNKNOWN));
+		this.setText(msg, SmsDcs.getGeneralDataCodingDcs(smsAlphabet, messageClass));
 	}
 
 	/**
@@ -140,11 +141,14 @@ public class SmsTextMessage extends SmsConcatMessage
 		{
 			throw new IllegalArgumentException("Text cannot be null, use an empty string instead.");
 		}
-		if (dcs_ != null && dcs_.getAlphabet() == SmsAlphabet.GSM)
+		if (dcs_ != null)
 		{
-			text = Normalizer.normalize(text, Normalizer.Form.NFD);
-			text = text.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
-			text = text.replaceAll("€", "euros");
+			if (dcs_.getAlphabet() == SmsAlphabet.GSM)
+			{
+				text = Normalizer.normalize(text, Normalizer.Form.NFD);
+				text = text.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+				text = text.replaceAll("€", "euros");
+			}
 		}
 		text_ = text;
 	}
